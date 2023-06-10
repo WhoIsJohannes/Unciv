@@ -1,7 +1,10 @@
 package com.unciv.models.ruleset.nation
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.unciv.Constants
+import com.unciv.logic.IsPartOfGameInfoSerialization
 import com.unciv.models.ruleset.Ruleset
 import com.unciv.models.ruleset.RulesetObject
 import com.unciv.models.ruleset.unique.UniqueFlag
@@ -9,11 +12,10 @@ import com.unciv.models.ruleset.unique.UniqueTarget
 import com.unciv.models.ruleset.unique.UniqueType
 import com.unciv.models.translations.squareBraceRegex
 import com.unciv.models.translations.tr
-import com.unciv.ui.components.Fonts
 import com.unciv.ui.components.extensions.colorFromRGB
+import com.unciv.ui.objectdescriptions.BaseUnitDescriptions
 import com.unciv.ui.screens.civilopediascreen.CivilopediaScreen.Companion.showReligionInCivilopedia
 import com.unciv.ui.screens.civilopediascreen.FormattedLine
-import com.unciv.ui.objectdescriptions.BaseUnitDescriptions
 import kotlin.math.pow
 
 class Nation : RulesetObject() {
@@ -53,6 +55,35 @@ class Nation : RulesetObject() {
     var favoredReligion: String? = null
 
     var cities: ArrayList<String> = arrayListOf()
+
+    open class GreatPersonNamesByTypes : HashMap<String, ArrayList<String>>(), IsPartOfGameInfoSerialization {
+        override fun clone(): GreatPersonNamesByTypes {
+            val toReturn = GreatPersonNamesByTypes()
+            toReturn.putAll(this)
+            return toReturn
+        }
+
+        /** Custom Json formatter for a [GreatPersonNamesByTypes]. */
+        class Serializer : Json.Serializer<GreatPersonNamesByTypes> {
+            override fun write(json: Json, `object`: GreatPersonNamesByTypes, knownType: Class<*>?) {
+                throw NotImplementedError()
+            }
+
+            override fun read(json: Json, jsonData: JsonValue, type: Class<*>?) =
+                GreatPersonNamesByTypes().apply {
+                    for (entry in jsonData) {
+                        val unitName = entry.name
+                        val names = mutableListOf<String>()
+                        for (i in 0 until entry.size) {
+                            names.add(entry.getString(i))
+                        }
+                        this[unitName] = ArrayList(names)
+                    }
+                }
+        }
+    }
+
+    var greatPersonNames: GreatPersonNamesByTypes = GreatPersonNamesByTypes()
 
     override fun getUniqueTarget() = UniqueTarget.Nation
 

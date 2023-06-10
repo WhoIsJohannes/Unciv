@@ -37,6 +37,8 @@ class UnitManager(val civInfo:Civilization) {
         // silently bail if no tile to place the unit is found
             ?: return null
         if (unit.isGreatPerson()) {
+            val greatPersonName = civInfo.nation.greatPersonNames[unit.name]?.randomOrNull()
+            if (greatPersonName != null) placedUnit.instanceName = greatPersonName
             civInfo.addNotification("A [${unit.name}] has been born in [${cityToAddTo.name}]!", placedUnit.getTile().position, NotificationCategory.General, unit.name)
         }
 

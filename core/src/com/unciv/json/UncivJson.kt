@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.JsonWriter
 import com.badlogic.gdx.utils.SerializationException
 import com.unciv.logic.civilization.CivRankingHistory
 import com.unciv.logic.map.tile.TileHistory
+import com.unciv.models.ruleset.nation.Nation
 import com.unciv.ui.components.KeyCharAndCode
 import com.unciv.ui.components.KeyboardBindings
 import java.time.Duration
@@ -30,6 +31,7 @@ fun json() = Json(JsonWriter.OutputType.json).apply {
     setSerializer(KeyboardBindings::class.java, KeyboardBindings.Serializer())
     setSerializer(TileHistory::class.java, TileHistory.Serializer())
     setSerializer(CivRankingHistory::class.java, CivRankingHistory.Serializer())
+    setSerializer(Nation.GreatPersonNamesByTypes::class.java, Nation.GreatPersonNamesByTypes.Serializer())
 }
 
 /**
