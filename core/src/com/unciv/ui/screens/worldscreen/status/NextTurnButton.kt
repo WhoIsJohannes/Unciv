@@ -162,6 +162,7 @@ class NextTurnButton : IconTextButton("", null, 30) {
                     worldScreen.viewingCiv.hasMovedAutomatedUnits = true
                     worldScreen.isPlayersTurn = false // Disable state changes
                     worldScreen.nextTurnButton.disable()
+                    worldScreen.automateRestOfTurnButton.disable()
                     Concurrency.run("Move automated units") {
                         for (unit in worldScreen.viewingCiv.units.getCivUnits())
                             unit.doAction()
@@ -169,6 +170,7 @@ class NextTurnButton : IconTextButton("", null, 30) {
                             worldScreen.shouldUpdate = true
                             worldScreen.isPlayersTurn = true //Re-enable state changes
                             worldScreen.nextTurnButton.enable()
+                            worldScreen.automateRestOfTurnButton.enable()
                         }
                     }
                 }

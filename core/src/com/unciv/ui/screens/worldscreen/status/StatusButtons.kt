@@ -5,7 +5,8 @@ import com.badlogic.gdx.utils.Disposable
 
 class StatusButtons(
     nextTurnButton: NextTurnButton,
-    multiplayerStatusButton: MultiplayerStatusButton? = null
+    automateRestOfTurnButton: AutomateRestOfTurnButton,
+    multiplayerStatusButton: MultiplayerStatusButton? = null,
 ) : HorizontalGroup(), Disposable {
     var multiplayerStatusButton: MultiplayerStatusButton? = multiplayerStatusButton
         set(button) {
@@ -26,6 +27,7 @@ class StatusButtons(
             addActor(multiplayerStatusButton)
         }
         addActor(nextTurnButton)
+        addActor(automateRestOfTurnButton)
     }
 
     override fun dispose() {

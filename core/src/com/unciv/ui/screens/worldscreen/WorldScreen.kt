@@ -55,6 +55,7 @@ import com.unciv.ui.screens.victoryscreen.VictoryScreen
 import com.unciv.ui.screens.worldscreen.bottombar.BattleTable
 import com.unciv.ui.screens.worldscreen.bottombar.TileInfoTable
 import com.unciv.ui.screens.worldscreen.minimap.MinimapHolder
+import com.unciv.ui.screens.worldscreen.status.AutomateRestOfTurnButton
 import com.unciv.ui.screens.worldscreen.status.MultiplayerStatusButton
 import com.unciv.ui.screens.worldscreen.status.NextTurnButton
 import com.unciv.ui.screens.worldscreen.status.NextTurnProgress
@@ -117,7 +118,8 @@ class WorldScreen(
     private val bottomTileInfoTable = TileInfoTable(viewingCiv)
     internal val notificationsScroll = NotificationsScroll(this)
     internal val nextTurnButton = NextTurnButton()
-    private val statusButtons = StatusButtons(nextTurnButton)
+    internal val automateRestOfTurnButton = AutomateRestOfTurnButton()
+    private val statusButtons = StatusButtons(nextTurnButton, automateRestOfTurnButton)
     private val tutorialTaskTable = Table().apply {
         background = skinStrings.getUiBackground("WorldScreen/TutorialTaskTable", tintColor = skinStrings.skinConfig.baseColor.darken(0.5f))
     }
@@ -251,6 +253,7 @@ class WorldScreen(
         globalShortcuts.add(KeyCharAndCode.ctrl('O')) { // Game Options
             this.openOptionsPopup(onClose = {
                 nextTurnButton.update(this)
+                automateRestOfTurnButton.update(this)
             })
         }
         globalShortcuts.add(KeyCharAndCode.ctrl('S')) { game.pushScreen(SaveGameScreen(gameInfo)) }    //   Save
@@ -655,6 +658,7 @@ class WorldScreen(
 
     private fun updateGameplayButtons() {
         nextTurnButton.update(this)
+        automateRestOfTurnButton.update(this)
 
         updateMultiplayerStatusButton()
 
